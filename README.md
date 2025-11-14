@@ -52,3 +52,6 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 the Drive URLs stored in metadata; it does not host large files.
 - For production, consider adding authentication (API key) and HTTPS (Render
 provides TLS automatically).
+
+Fixing Python version for Render
+

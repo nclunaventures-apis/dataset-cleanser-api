@@ -1,14 +1,15 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse, FileResponse
 import datetime
 import os
-
 from typing import List
+
 from models import DatasetMeta, UpdatePayload
 import dbmanager as db_manager
 
 
-# Render gives you PORT through env
+# PORT for Render
 API_PORT = int(os.environ.get("PORT", 8000))
 
 app = FastAPI(title="Dataset Cleanser API")
@@ -27,7 +28,7 @@ app.add_middleware(
 
 
 # ============================================
-# STARTUP EVENT
+# STARTUP
 # ============================================
 @app.on_event("startup")
 def startup_event():
@@ -37,7 +38,30 @@ def startup_event():
 
 
 # ============================================
-# ROUTES
+# STATIC FILES (logo)
+# ============================================
+@app.get("/static/{filename}")
+def get_static(filename: str):
+    static_path = os.path.join(os.path.dirname(__file__), "static", filename)
+    if os.path.exists(static_path):
+        return FileResponse(static_path)
+    raise HTTPException(status_code=404, detail="Static file not found")
+
+
+# ============================================
+# HOMEPAGE ROUTE
+# ============================================
+@app.get("/", response_class=HTMLResponse)
+def homepage():
+    index_path = os.path.join(os.path.dirname(__file__), "index.html")
+    if os.path.exists(index_path):
+        with open(index_path, "r") as f:
+            return f.read()
+    return "<h1>Homepage file not found</h1>"
+
+
+# ============================================
+# API ROUTES
 # ============================================
 @app.get("/datasets", response_model=List[DatasetMeta])
 def get_datasets():
@@ -74,7 +98,7 @@ def update(payload: UpdatePayload):
 
 
 # ============================================
-# LOCAL DEV ENTRYPOINT
+# RUN LOCALLY
 # ============================================
 if __name__ == "__main__":
     import uvicorn

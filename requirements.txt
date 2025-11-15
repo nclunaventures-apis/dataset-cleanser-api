@@ -1,8 +1,9 @@
 fastapi==0.110.0
 uvicorn[standard]==0.30.0
-
 pydantic==2.7.0
-
+pydantic-core==2.18.1
 aiofiles==23.2.1
 requests==2.31.0
 python-multipart==0.0.9
+redis==4.8.0
+python-dotenv==1.2.0

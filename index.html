@@ -1,75 +1,371 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dataset Cleanser API</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dataset Cleanser API — Home</title>
+  <meta name="description" content="Dataset Cleanser API — clean, tag, and manage dataset metadata. FastAPI powered API with searchable dataset endpoints." />
+
+  <!-- Google font (fallback-safe) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      color: #1f2937;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --muted:#9aa4b2;
+      --accent:#6ee7b7;
+      --accent-2:#60a5fa;
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+      --radius:16px;
+      --maxw:1100px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, #071025 0%, #071827 60%);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
+      padding:36px 20px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
     }
 
-    .container {
-      max-width: 600px;
-      padding: 40px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    .wrap{
+      width:100%;
+      max-width:var(--maxw);
+      margin:20px auto;
     }
 
-    img {
-      width: 160px;
-      margin-bottom: 20px;
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:28px;
     }
 
-    h1 {
-      font-size: 32px;
-      margin-bottom: 10px;
-      color: #0f172a;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      text-decoration:none;
+      color:inherit;
+    }
+    .brand img{
+      width:64px;
+      height:64px;
+      object-fit:contain;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      padding:8px;
+      box-shadow:0 6px 24px rgba(2,6,23,0.6);
+    }
+    .brand h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:-0.2px;
+      line-height:1;
+    }
+    .brand p{
+      margin:0;
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
     }
 
-    p {
-      font-size: 18px;
-      margin-bottom: 30px;
-      color: #374151;
+    nav{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:999px;
+      text-decoration:none;
+      background:transparent;
+      color:var(--accent-2);
+      border:1px solid rgba(255,255,255,0.06);
+      font-weight:600;
+      font-size:14px;
+    }
+    .btn.primary{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#042028;
+      border:0;
+      box-shadow:0 8px 30px rgba(96,165,250,0.08);
     }
 
-    a.btn {
-      display: inline-block;
-      padding: 12px 24px;
-      background: #2563eb;
-      color: white;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: 0.2s;
+    /* Hero */
+    .hero{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: var(--radius);
+      padding:34px;
+      box-shadow:0 10px 40px rgba(2,6,23,0.6);
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:28px;
+      align-items:center;
     }
 
-    a.btn:hover {
-      background: #1d4ed8;
+    .hero-left h2{
+      font-size:30px;
+      margin:0 0 12px 0;
+      line-height:1.05;
+      font-weight:800;
+      letter-spacing:-0.6px;
+      color:#eaf6ff;
+    }
+    .hero-left p.lead{
+      margin:0 0 18px 0;
+      color:var(--muted);
+      font-size:16px;
+      max-width:62ch;
+    }
+
+    .kpis{
+      display:flex;
+      gap:12px;
+      margin-top:8px;
+      flex-wrap:wrap;
+    }
+    .kpi{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:12px 14px;
+      border-radius:12px;
+      min-width:110px;
+      text-align:center;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .kpi strong{display:block; font-size:18px; color:var(--accent); }
+    .kpi span{display:block; font-size:12px; color:var(--muted); margin-top:6px;}
+
+    .hero-right{
+      background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:16px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .api-card{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      align-items:flex-start;
+    }
+    .api-url{
+      width:100%;
+      padding:10px;
+      background:var(--glass);
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.02);
+      color:var(--accent);
+      font-family:monospace;
+      font-weight:700;
+      font-size:13px;
+      overflow:auto;
+    }
+    .small{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* features */
+    .features{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+      margin-top:22px;
+    }
+    .feature{
+      background:var(--glass-2);
+      padding:18px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.02);
+      transition:transform .28s ease, box-shadow .28s ease;
+    }
+    .feature:hover{
+      transform:translateY(-6px);
+      box-shadow:0 14px 40px rgba(10,25,40,0.6);
+    }
+    .feature h3{
+      margin:0 0 8px 0;
+      font-size:16px;
+    }
+    .feature p{ margin:0; color:var(--muted); font-size:14px; }
+
+    footer{
+      margin-top:28px;
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* responsive */
+    @media (max-width:980px){
+      .hero{ grid-template-columns: 1fr; }
+      .features{ grid-template-columns: 1fr 1fr; }
+      header{ flex-direction:column; align-items:flex-start; gap:12px}
+    }
+    @media (max-width:600px){
+      .features{ grid-template-columns: 1fr; }
+      .brand h1{font-size:16px}
+      .brand p{display:none}
+      .brand img{width:56px;height:56px}
+    }
+
+    /* subtle entrance */
+    .fade-up{ animation:fadeUp .7s ease both; }
+    @keyframes fadeUp{
+      from{opacity:0; transform:translateY(8px)}
+      to{opacity:1; transform:none}
+    }
+
+    /* small copy button */
+    .copy-btn{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.03);
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      font-size:13px;
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <img src="/static/logo.png" alt="Dataset Cleanser Logo" />
+  <div class="wrap">
+    <header class="fade-up">
+      <a class="brand" href="/">
+        <img src="/static/logo.png" alt="Dataset Cleanser logo" />
+        <div>
+          <h1>Dataset Cleanser</h1>
+          <p>API • metadata cleaner • dataset indexing</p>
+        </div>
+      </a>
 
-    <h1>Dataset Cleanser API</h1>
-    <p>Your powerful automated engine for cleaning, tagging,<br>
-       and organizing large datasets.</p>
+      <nav>
+        <a class="btn" href="/docs">Docs</a>
+        <a class="btn" href="/redoc">ReDoc</a>
+        <a class="btn primary" href="/datasets">Try API</a>
+      </nav>
+    </header>
 
-    <a class="btn" href="/docs">View API Documentation</a>
+    <section class="hero fade-up" aria-labelledby="hero-title">
+      <div class="hero-left">
+        <h2 id="hero-title">Clean. Tag. Serve.</h2>
+        <p class="lead">Automate dataset metadata cleansing, tagging, and indexing so your data products are discoverable and production-ready. Lightweight API, local JSON + SQLite sync, and searchable endpoints.</p>
+
+        <div class="kpis" role="list">
+          <div class="kpi" role="listitem">
+            <strong id="stat-datasets">—</strong>
+            <span>Datasets indexed</span>
+          </div>
+          <div class="kpi" role="listitem">
+            <strong>Fast</strong>
+            <span>Low-latency endpoints</span>
+          </div>
+          <div class="kpi" role="listitem">
+            <strong>Portable</strong>
+            <span>Deploy anywhere (Render, Lightsail)</span>
+          </div>
+        </div>
+
+        <div style="margin-top:18px;">
+          <a class="btn primary" href="/docs">Get started — View Docs</a>
+        </div>
+      </div>
+
+      <aside class="hero-right">
+        <div class="api-card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-size:13px; color:var(--muted)">Primary API URL</div>
+              <div class="api-url" id="apiUrl">https://dataset-cleanser-api.onrender.com</div>
+            </div>
+            <div style="text-align:right;">
+              <button class="copy-btn" id="copyApi">Copy</button>
+              <div class="small" style="margin-top:8px">Example</div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;">
+            <div class="small">GET /datasets — list all</div>
+            <div class="small">GET /latest — latest entry</div>
+            <div class="small">GET /search?keyword=term — search</div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section style="margin-top:22px;">
+      <h2 style="margin:0 0 12px 0">Key features</h2>
+      <div class="features">
+        <div class="feature fade-up">
+          <h3>Automated cleansing</h3>
+          <p>Normalize field names, remove duplicates, and harmonize types before storage or export.</p>
+        </div>
+
+        <div class="feature fade-up">
+          <h3>Search & metadata</h3>
+          <p>Fast keyword-based search (SQLite-backed) and structured metadata for each dataset.</p>
+        </div>
+
+        <div class="feature fade-up">
+          <h3>Local-first & portable</h3>
+          <p>Use JSON for local workflows and SQLite for fast queries — easy to migrate to cloud later.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Made with care • <a href="/docs" style="color:var(--accent-2); text-decoration:none">Read the API docs</a> • <span id="footer-now"></span></p>
+      <p style="margin-top:8px; color:var(--muted)">© <span id="year"></span> Ncluna Ventures</p>
+    </footer>
   </div>
+
+  <script>
+    // fill year
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('footer-now').textContent = 'Status: Live';
+
+    // copy API URL
+    const copyBtn = document.getElementById('copyApi');
+    copyBtn.addEventListener('click', async () => {
+      const url = document.getElementById('apiUrl').textContent.trim();
+      try {
+        await navigator.clipboard.writeText(url);
+        copyBtn.textContent = 'Copied!';
+        setTimeout(()=> copyBtn.textContent = 'Copy', 1500);
+      } catch(e){
+        copyBtn.textContent = 'Copy Failed';
+        setTimeout(()=> copyBtn.textContent = 'Copy', 1500);
+      }
+    });
+
+    // fetch small stat (count datasets) — best-effort; fails silently if CORS blocks
+    async function loadStats(){
+      try{
+        const res = await fetch('/datasets');
+        if(!res.ok) return;
+        const data = await res.json();
+        const count = Array.isArray(data) ? data.length : '—';
+        document.getElementById('stat-datasets').textContent = count;
+      }catch(e){
+        // ignore
+      }
+    }
+    loadStats();
+  </script>
 </body>
 </html>

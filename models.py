@@ -1,3 +1,4 @@
+# models.py
 from typing import List, Optional
 from pydantic import BaseModel, HttpUrl
 
@@ -22,7 +23,3 @@ class UpdatePayload(BaseModel):
     columns: Optional[List[str]] = None
     description: Optional[str] = None
     tags: Optional[List[str]] = []
-
-
-class SearchResult(BaseModel):
-    results: List[DatasetMeta]
